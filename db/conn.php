@@ -7,14 +7,6 @@ $user = getenv('DB_USER') ?: 'root';
 $pass = '';
 $charset = 'utf8mb4';
 
-// Support Docker secrets: PASSWORD_FILE_PATH or MYSQL_PASSWORD_FILE (compose sets these)
-$passwordFile = getenv('PASSWORD_FILE_PATH') ?: getenv('MYSQL_PASSWORD_FILE') ?: null;
-if ($passwordFile && file_exists($passwordFile)) {
-    $pass = trim(file_get_contents($passwordFile));
-} elseif (getenv('DB_PASSWORD')) {
-    $pass = getenv('DB_PASSWORD');
-}
-
 $dsn = "mysql:host=$host;dbname=$db;charset=$charset";
 
 try {
@@ -40,7 +32,13 @@ try {
 }
 
 require_once 'crud.php';
+require_once "user.php";
+
 $crud = new Crud($pdo);
+$user = new User($pdo);
+
+$user->insertUser("admin", "password"); // Create admin user
+
 if (isset($DEBUG) && $DEBUG) {
     echo "<h1 class='text-center text-success'>crud object given the pdo object</h1>";
 }

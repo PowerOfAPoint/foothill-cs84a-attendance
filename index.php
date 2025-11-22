@@ -20,7 +20,7 @@ $institutions = $crud->getInstitutions();
 - speciality (db admin, sw dev, web admin, other)
 - email address
 - contact number 
-    -->
+-->
 <h1 class="text-center">Registration for IT Conference</h1>
 
 <form method="post" action="success.php">
