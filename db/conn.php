@@ -1,10 +1,9 @@
 <?php
 
-// Allow overriding connection settings with environment variables when running in Docker
-$host = getenv('DB_HOST') ?: 'localhost'; // default for local/XAMPP
-$db = getenv('DB_NAME') ?: 'attendance_db';
-$user = getenv('DB_USER') ?: 'root';
-$pass = '';
+$host = 'db'; // default for local/XAMPP
+$db = 'attendance_db';
+$user = 'root';
+$pass = 'password';
 $charset = 'utf8mb4';
 
 $dsn = "mysql:host=$host;dbname=$db;charset=$charset";

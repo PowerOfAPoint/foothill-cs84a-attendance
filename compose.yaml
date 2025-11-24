@@ -1,0 +1,50 @@
+services:
+  server:
+    build:
+      context: .
+      platforms:
+        - linux/amd64
+        - linux/arm64/v8
+    environment:
+      - DB_HOST=db
+      - DB_USER=root
+      - DB_PASSWORD=password
+    ports:
+      - 9000:80
+    depends_on:
+      - db
+    develop:
+      watch:
+        - action: sync
+          path: ./
+          target: /var/www/html
+    networks:
+      - app-network
+
+  db:
+    image: mariadb:latest
+    restart: always
+    volumes:
+      - ./mysql:/var/lib/mysql
+    environment:
+      - MYSQL_ROOT_PASSWORD=password
+    ports:
+      - 3306:3306
+    networks:
+      - app-network
+
+  phpmyadmin:
+    image: phpmyadmin:latest
+    ports:
+      - 8080:80
+    depends_on:
+      - db
+    environment:
+      - PMA_HOST=db
+      - PMA_PORT=3306
+    networks:
+      - app-network
+
+networks:
+  app-network:
+    driver: bridge
